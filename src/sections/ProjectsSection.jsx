@@ -1,7 +1,7 @@
 import React from "react";
 import { PROJECTS_DATA } from "../data/projects"; 
 import { Github } from "lucide-react";
-import { Card } from "../components/Card";
+import { Card } from "../data/card";
 const PROJECTS = PROJECTS_DATA;
 
 export default function ProjectsSection() {

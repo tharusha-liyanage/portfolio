@@ -4,6 +4,10 @@ import AboutSection from "./sections/AboutSection";
 import SkillsSection from "./sections/SkillsSection";
 import ServicesSection from "./sections/ServicesSection";
 import ProjectsSection from "./sections/ProjectsSection";
+import ExperienceSection from "./sections/ExperienceSection";
+import ContactSection from "./sections/ContactSection";
+import Nav from "./sections/Nav";
+
 import Footer from "./sections/Footer";
 
 export default function App() {
@@ -15,7 +19,7 @@ export default function App() {
                     body {
                         font-family: 'Inter', sans-serif;
                         /* Animated gradient background */
-                        background: linear-gradient(-45deg, #2a0e4a, #1a0b2c, #3b0f5a, #1a0b2c);
+                        background: linear-gradient(-45deg, #0b0a0bff, #353335ff, #322f32ff, #260e24ff);
                         background-size: 400% 400%;
                         animation: gradient-flow 20s ease infinite;
                     }
@@ -34,8 +38,8 @@ export default function App() {
                     }
                     /* Subtle pulse for contact buttons */
                     @keyframes pulse-subtle {
-                        0%, 100% { box-shadow: 0 0 0 0 rgba(169, 85, 247, 0.4); }
-                        50% { box-shadow: 0 0 8px 4px rgba(169, 85, 247, 0.6); }
+                        0%, 100% { box-shadow: 0 0 0 0 rgba(244, 85, 247, 0.4); }
+                        50% { box-shadow: 0 0 8px 4px rgba(247, 85, 244, 0.6); }
                     }
                     /* Floating animation for icons */
                     @keyframes float {

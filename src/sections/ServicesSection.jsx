@@ -3,7 +3,7 @@ import { SERVICES_DATA } from "../data/services";
 const SERVICES = SERVICES_DATA;
 import { Briefcase, ChevronDown } from "lucide-react";
 import { SectionTitle } from "../data/SectionTitle";
-import { Card } from "../components/Card";
+import { Card } from "../data/card";
 
 
 export default function ServicesSection() {

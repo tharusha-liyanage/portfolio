@@ -8,5 +8,8 @@ export const SKILLS_DATA = [
     { name: "PHP", color: "text-indigo-400" },
     { name: "Tailwind CSS", color: "text-cyan-400" },
     { name: "Generative AI", color: "text-purple-400" },
+    { name: "MySQL", color: "text-blue-600" },
+    { name: "Bootstrap", color: "text-purple-600" },
+    { name: "Python", color: "text-yellow-600" },
 ];
 

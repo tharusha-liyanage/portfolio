@@ -2,7 +2,7 @@ import React from "react";
 import { Github, Linkedin, Download } from "lucide-react";
 import { HERO_DATA } from "../data/hero";
 import { SKILLS_DATA as SKILLS } from "../data/skills";
-import TechIcon from "../data/techicon";
+import TechIcon from "../data/TechIcon";
 import { useState } from "react";
 
 
@@ -15,7 +15,7 @@ export default function HeroSection() {
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     {/* Left Content */}
                     <div className="md:w-3/5 text-center md:text-left space-y-6">
-                        <div className="text-xl text-[#c084fc] font-semibold transition-opacity duration-1000 delay-300 opacity-100 animate-fadeIn"> {/* Updated color */}
+                        <div className="text-3xl text-[#8e2489ff] font-semibold transition-opacity duration-1000 delay-300 opacity-100 animate-fadeIn"> {/* Updated color */}
                             Hi, I'm
                         </div>
                         <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight animate-slideInLeft">
@@ -32,7 +32,7 @@ export default function HeroSection() {
                                 My Work
                             </a>
                             <a href={HERO_DATA.cvLink} download
-                                className="px-6 py-3 bg-[#a955f7] text-white font-semibold rounded-full hover:bg-[#a955f7]/90 transition-all duration-300 transform hover:scale-105 flex items-center">
+                                className="px-6 py-3 bg-[#8e2489ff] text-white font-semibold rounded-full hover:bg-[#a955f7]/90 transition-all duration-300 transform hover:scale-105 flex items-center">
                                 Download CV
                             </a>
                         </div>
@@ -44,7 +44,7 @@ export default function HeroSection() {
                         onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)}
                     >
-                        <div className="relative p-2 bg-[#a955f7]/30 rounded-full transition-all duration-500 hover:ring-8 hover:ring-[#a955f7]/20"> {/* Updated colors */}
+                        <div className="relative p-2 bg-[#8e2489ff]/30 rounded-full transition-all duration-500 hover:ring-8 hover:ring-[#a955f7]/20"> {/* Updated colors */}
                             <img
                                 src={HERO_DATA.imageSrc}
                                 alt={HERO_DATA.name}
@@ -66,7 +66,6 @@ export default function HeroSection() {
                     </div>
                 </div>
             </div>
-            <div className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover opacity-10" style={{ backgroundImage: "url('https://placehold.co/1920x1080/000000/ffffff?text=Abstract+Lines')" }}></div>
         </section>
   );
 }

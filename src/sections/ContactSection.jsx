@@ -1,4 +1,7 @@
 import React from 'react'
+import { Send, Mail, Smartphone, Github, Linkedin } from "lucide-react";
+import { HERO_DATA } from "../data/hero";
+import { SectionTitle } from "../data/SectionTitle";
 
 function ContactSection() {
   return (

@@ -1,4 +1,4 @@
-export const EXPERIENCE = [
+export const EXPERIENCE_DATA = [
     {
         type: "Education",
         title: "BSc Hons in Computer Science & Technology",

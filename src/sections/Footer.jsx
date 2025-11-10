@@ -1,4 +1,6 @@
 import React from "react";
+import { HERO_DATA } from "../data/hero";
+
 
 export default function Footer() {
   return (

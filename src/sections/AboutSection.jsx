@@ -1,18 +1,22 @@
 import React from "react";
-import { ABOUT_DATA } from "../data/about";
+import img2 from "../assets/img3.png";
 
 
 export default function AboutSection() {
   return (
-   <section id="about" className="py-16 bg-[#2a1a3e]/50"> {/* Section background */}
+   <section id="about" className="py-16 bg-[#551252ff]/50"> {/* Section background */}
         <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
                 {/* Left Content: Text */}
                 <div className="animate-slideInLeft">
                     {/* Title styled like the image */}
-                    <h2 className="text-4xl font-bold text-white mb-6">
-                        <span className="font-serif italic text-gray-300">About</span> <span className="text-[#a955f7]">me</span>
+                    <h2 className="text-4xl font-bold text-white mb-6 relative inline-block">
+                    <span className="font-serif italic text-gray-300">About</span>{' '}
+                    <span className="text-[#8e2489ff]">me</span>
+
+                    <div className="absolute left-1/2 -translate-x-[60%] w-24 h-1 bg-[#a949a8ff] rounded-full mt-2"></div>
                     </h2>
+
                     <p className="text-gray-400 leading-relaxed space-y-4">
                         {/* This is the text from the image and CV */}
                         <span>
@@ -31,7 +35,7 @@ export default function AboutSection() {
                 {/* Right Content: Image */}
                 <div className="animate-slideInRight">
                     <img 
-                        src="https://placehold.co/600x400/1a0b2c/a955f7?text=Tech+Illustration" 
+                        src={img2} 
                         alt="About Me Illustration" 
                         className="rounded-xl shadow-2xl shadow-[#a955f7]/20 border border-[#5a3a7b]/50"
                     />
