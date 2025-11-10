@@ -1,19 +1,35 @@
-import React from "react";
-import { Card } from "../data/card";
+import { motion } from "framer-motion";
 
+const TimelineItem = ({ data, delay }) => {
+  return (
+    <motion.div
+      className="flex items-center gap-5 p-5 rounded-xl cursor-pointer shadow-md 
+             bg-gradient-to-r from-[#3e2d3dff] to-[#74225bff] 
+             hover:shadow-[#ffb0fc]/60 transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.05, y: -5 }}
+      transition={{ delay: delay / 1000, duration: 0.6, ease: 'easeOut' }}
+    >
+      {data.img && (
+        <motion.img
+          src={data.img}
+          alt={data.title}
+          className="w-16 h-auto object-cover  border-2 border-[#a949a8ff]"
+          whileHover={{ rotate: 5 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        />
+      )}
 
-const TimelineItem = ({ data, delay }) => (
-    <Card delay={delay}>
-        <div className="flex items-center space-x-4">
-            <div className={`p-3 rounded-full ${data.type === 'Education' ? 'bg-blue-900/30 text-blue-400' : data.type === 'Achievement' ? 'bg-yellow-900/30 text-yellow-400' : 'bg-purple-900/30 text-purple-400'} flex-shrink-0`}> {/* Updated bg opacity */}
-                {data.icon}
-            </div>
-            <div>
-                <h3 className="text-lg font-semibold text-white">{data.title}</h3>
-                <p className="text-sm text-gray-300">{data.institution}</p>
-                <p className="text-xs text-[#c084fc] mt-1">{data.duration}</p> {/* Updated color */}
-            </div>
-        </div>
-    </Card>
-);
+      <div className="text-left">
+        <h3 className="font-bold text-white text-lg md:text-xl transition-colors duration-300 hover:text-[#792376ff]">
+          {data.title}
+        </h3>
+        <p className="text-gray-300 text-sm md:text-base">{data.institution}</p>
+        <span className="text-gray-400 text-xs md:text-sm">{data.duration}</span>
+      </div>
+    </motion.div>
+  );
+};
+
 export default TimelineItem;

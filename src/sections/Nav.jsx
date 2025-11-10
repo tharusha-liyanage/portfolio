@@ -26,7 +26,7 @@ function Nav() {
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#1a0b2c]/95 backdrop-blur-md shadow-xl border-b border-[#5a3a7b]/50' : 'bg-transparent'}`}> {/* Updated colors */}
             <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
                 <a href="#home" className="text-2xl font-bold text-[#8e2489ff] hover:text-white transition-colors"> {/* Updated color */}
-                    TL<span className="text-white">.Dev</span>
+                    Tharusha<span className="text-white">.L</span>
                 </a>
 
                 {/* Desktop Menu */}

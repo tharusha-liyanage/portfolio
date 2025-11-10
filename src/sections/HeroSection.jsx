@@ -4,6 +4,7 @@ import { HERO_DATA } from "../data/hero";
 import { SKILLS_DATA as SKILLS } from "../data/skills";
 import TechIcon from "../data/TechIcon";
 import { useState } from "react";
+import { TypeAnimation } from "react-type-animation";
 
 
 export default function HeroSection() {
@@ -22,19 +23,54 @@ export default function HeroSection() {
                             {HERO_DATA.name}
                         </h1>
                         <h2 className="text-2xl md:text-3xl font-light text-gray-300 animate-slideInLeft delay-100">
-                            {HERO_DATA.tagline}
+                             <TypeAnimation
+                                sequence={[
+                                    "Full-Stack Developer", 2000,
+                                    "Frontend Developer", 2000,
+                                    "Backend Developer", 2000,
+                                ]}
+                                wrapper="span"
+                                speed={50}
+                                repeat={Infinity}
+                                className="text-3xl text-[#be9abdff] font-semibold"
+                                />
                         </h2>
                         {/* Removed the <p> description from here */}
                         <div className="flex justify-center md:justify-start space-x-4 pt-6 animate-fadeIn delay-700">
                             {/* Updated buttons to match Figma */}
                             <a href="#projects"
-                                className="px-6 py-3 bg-gray-200 text-black font-semibold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center">
+                                className="px-30 py-3 bg-[linear-gradient(to_right,#fff8f8eb,#a51b83d0)] backdrop-blur-md p-6 rounded-2xl text-black font-semibold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center">
                                 My Work
                             </a>
                             <a href={HERO_DATA.cvLink} download
-                                className="px-6 py-3 bg-[#8e2489ff] text-white font-semibold rounded-full hover:bg-[#a955f7]/90 transition-all duration-300 transform hover:scale-105 flex items-center">
+                                className="px-30 py-3 bg-[linear-gradient(to_right,#9c2089eb,#e063c1d0)] backdrop-blur-md text-white font-semibold rounded-full hover:bg-[#a955f7]/90 transition-all duration-300 transform hover:scale-105 flex items-center">
                                 Download CV
                             </a>
+                        </div>
+
+                        <div className="flex justify-center md:justify-start space-x-4 pt-6 animate-fadeIn delay-700">
+                           {/* GitHub Button */}
+                                {/* GitHub Button */}
+                                <a
+                                    href={HERO_DATA.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center px-10 py-3 backdrop-blur-md bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-all duration-300 transform hover:scale-110 shadow-lg border border-[#a955f7]/30"
+                                >
+                                    <Github className="w-5 h-5 mr-2" />
+                                    GitHub
+                                </a>
+
+                                {/* LinkedIn Button */}
+                                <a
+                                    href={HERO_DATA.linkedin}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center px-10 py-3 backdrop-blur-md bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-all duration-300 transform hover:scale-110 shadow-lg "
+                                >
+                                    <Linkedin className="w-5 h-5 mr-2" />
+                                    LinkedIn
+                                </a>
                         </div>
                     </div>
 

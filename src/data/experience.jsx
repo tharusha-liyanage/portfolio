@@ -1,24 +1,19 @@
+import logo from "../assets/logo.jpg";
+import logo2 from "../assets/logo2.png";
 export const EXPERIENCE_DATA = [
     {
         type: "Education",
         title: "BSc Hons in Computer Science & Technology",
         institution: "Uva Wellassa University of Sri Lanka",
         duration: "2023 - 2026",
-        icon: <GraduationCap className="w-5 h-5" />
+        img:logo
     },
     {
-        type: "Achievement",
-        title: "Champion of SHECODERess v6.0",
-        institution: "Hack & Design Showdown (Team BitBelles)",
-        duration: "2024",
-        icon: <Award className="w-5 h-5 text-yellow-400" />
+        type: "Education",
+        title: "Diploma in Information Technology",
+        institution: "ESOFT Metro Campus in Sri Lanka",
+        duration: "2022 - 2023",
+        img:logo2
     },
-    {
-        type: "Volunteering",
-        title: "Marker-Based AR Project Contributor",
-        institution: "UWU EXPO 2025",
-        duration: "2025",
-        icon: <Briefcase className="w-5 h-5" />
-    },
+    
 ];
-import { GraduationCap, Award, Briefcase } from "lucide-react";
