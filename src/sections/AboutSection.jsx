@@ -9,8 +9,10 @@ export default function AboutSection() {
       id="about"
       className="py-12 sm:py-16 lg:py-24 bg-[#551252ff]/50"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ✅ Added consistent horizontal padding */}
+      <div className="mx-auto px-6 sm:px-10 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+          
           {/* Left Content: Text */}
           <motion.div
             initial={{ opacity: 0, x: -60 }}

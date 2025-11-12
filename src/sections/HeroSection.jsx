@@ -14,8 +14,10 @@ export default function HeroSection() {
       id="home"
       className="pt-20 pb-16 md:py-28 lg:py-32 bg-transparent relative overflow-hidden"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* ✅ Replaced container with manual padding for cross-browser consistency */}
+      <div className="mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 lg:gap-16">
+          
           {/* Left Content */}
           <div className="w-full lg:w-3/5 text-center lg:text-left space-y-5 sm:space-y-6">
             <div className="text-2xl sm:text-3xl text-[#8e2489ff] font-semibold animate-fadeIn">
