@@ -10,7 +10,7 @@ import img9 from "../assets/img9.png";
 
 export const PROJECTS_DATA = [
    {
-        title: "Personalized micro tutor (AI/RAG)",
+        title: "Personalized micro tutor (AI/RAG)-ongoing project",
         description: "Develop an AI-powered microtutor system capable of providing personalized learning support using Generative AI, RAG, and LLMs.",
         technologies: ["Generative AI", "Agentic AI", "RAG", "LLMs"],
         github: "#",
@@ -24,7 +24,7 @@ export const PROJECTS_DATA = [
         imageSrc: img5, // Updated image
     },
     {
-        title: "Mahinda Trade Center (E-commerce)",
+        title: "Mahinda Trade Center (E-commerce)-ongoing project",
         description: "Full-stack e-commerce website for managing products, customers, and orders.",
         technologies: ["React", "Spring Boot", "PostgreSQL", "Tailwind CSS"],
         github: "https://github.com/tharusha-liyanage/cloth-frontend",

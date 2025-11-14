@@ -2,68 +2,127 @@
 import React from "react";
 import { motion } from "framer-motion";
 import img2 from "../assets/img3.png";
+import { Code2, Database, BrainCircuit } from "lucide-react";
 
 export default function AboutSection() {
+  // Animation variants for staggered entrance
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
     <section
       id="about"
-      className="py-12 sm:py-16 lg:py-24 bg-[#551252ff]/50"
+      className="relative py-20 lg:py-28 overflow-hidden bg-[#290527ff]"
     >
-      {/* ✅ Added consistent horizontal padding */}
-      <div className="mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+      {/* ================= BACKGROUND EFFECTS ("Lightning") ================= */}
+      {/* Purple Glow (Left) */}
+      <div className="absolute top-20 -left-20 w-96 h-96 bg-purple-600/20 rounded-full blur-[128px] animate-pulse" />
+      {/* Pink/Cyan Glow (Right) */}
+      <div className="absolute bottom-10 -right-20 w-96 h-96 bg-pink-600/20 rounded-full blur-[128px] animate-pulse delay-1000" />
+      
+      {/* Grid Overlay */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>
+
+      <div className="mx-auto px-6 sm:px-10 lg:px-16 relative z-10 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
-          {/* Left Content: Text */}
+          {/* ================= LEFT CONTENT (Text) ================= */}
           <motion.div
-            initial={{ opacity: 0, x: -60 }}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="order-2 lg:order-1"
+          >
+            {/* Header */}
+            <motion.div variants={itemVariants} className="relative mb-8">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+                About <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Me</span>
+              </h2>
+              <div className="w-20 h-1.5 bg-gradient-to-r from-purple-400 to-blue-500 rounded-full"></div>
+            </motion.div>
+
+            {/* Description Text */}
+            <motion.div variants={itemVariants} className="space-y-6 text-gray-300 leading-relaxed text-lg">
+              <p>
+                I am an undergraduate in <span className="text-white font-medium">Computer Science and Technology</span>,
+                passionate about becoming a software engineer. I love turning complex problems into simple, beautiful, and intuitive designs.
+              </p>
+              <p>
+                I have a solid understanding of <span className="text-purple-400">full-stack development</span> through
+                academic projects and self-learning. My journey involves mastering technologies like:
+              </p>
+            </motion.div>
+
+            {/* Feature/Skill Cards (New Addition) */}
+            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+              <div className="p-4 bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm hover:bg-white/10 transition-colors">
+                <Code2 className="w-8 h-8 text-purple-400 mb-2" />
+                <h4 className="text-white font-semibold">Frontend Magic</h4>
+                <p className="text-sm text-gray-400">React, Tailwind, Bootstrap</p>
+              </div>
+              
+              <div className="p-4 bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm hover:bg-white/10 transition-colors">
+                <Database className="w-8 h-8 text-pink-400 mb-2" />
+                <h4 className="text-white font-semibold">Backend Logic</h4>
+                <p className="text-sm text-gray-400">Spring Boot, PHP, MERN</p>
+              </div>
+            </motion.div>
+
+            {/* Quote / Final thought */}
+            <motion.p variants={itemVariants} className="mt-8 text-gray-400 italic border-l-4 border-purple-500 pl-4">
+              "I enjoy problem-solving, teamwork, and learning new tools to build efficient software solutions."
+            </motion.p>
+          </motion.div>
+
+          {/* ================= RIGHT CONTENT (Image) ================= */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            className="order-1 lg:order-2 flex justify-center relative"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 relative inline-block text-center md:text-left">
-              <span className="font-serif italic text-gray-300">About</span>{" "}
-              <span className="text-[#8e2489ff]">me</span>
-              <div className="absolute left-1/2 md:left-0 -translate-x-1/2 md:-translate-x-0 w-20 sm:w-24 h-1 bg-[#a949a8ff] rounded-full mt-2"></div>
-            </h2>
+            {/* Background Card Effect */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl blur-2xl opacity-20 transform rotate-6 scale-90 animate-pulse"></div>
 
-            <div className="space-y-4 text-gray-400 leading-relaxed text-base sm:text-lg text-center md:text-left">
-              <p>
-                I am an undergraduate in Computer Science and Technology,
-                passionate about becoming a software engineer.
-              </p>
-              <p>
-                I have a solid understanding of full-stack development through
-                academic projects and self-learning, using technologies like
-                PHP, React, MERN stack, and Spring Boot. I enjoy problem-solving,
-                teamwork, and learning new tools to build efficient and
-                user-friendly software solutions.
-              </p>
+            {/* Main Glass Card Container */}
+            <div className="relative group w-full max-w-md">
+               {/* Top-Left Corner Decoration */}
+               <div className="absolute -top-4 -left-4 w-20 h-20 border-t-4 border-l-4 border-purple-500/50 rounded-tl-3xl z-20"></div>
+               {/* Bottom-Right Corner Decoration */}
+               <div className="absolute -bottom-4 -right-4 w-20 h-20 border-b-4 border-r-4 border-pink-500/50 rounded-br-3xl z-20"></div>
+
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl">
+                <img
+                  src={img2}
+                  alt="About Me Illustration"
+                  className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
+                />
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60"></div>
+                
+                {/* Floating Text on Image */}
+                <div className="absolute bottom-6 left-6 z-10">
+                  <div className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                    <p className="text-white font-medium text-sm">Open to Work</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Right Content: Image with hover effect */}
-          <motion.div
-            initial={{ opacity: 0, x: 60, scale: 0.95 }}
-            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-            viewport={{ once: true }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0px 0px 40px rgba(169, 73, 168, 0.6)",
-              filter: "brightness(1.1) saturate(1.2)",
-            }}
-            className="flex justify-center md:justify-end"
-          >
-            <div className="relative rounded-xl overflow-hidden border border-[#5a3a7b]/50 shadow-2xl shadow-[#a955f7]/20 max-w-[85%] sm:max-w-[70%] md:max-w-full mx-auto">
-              <img
-                src={img2}
-                alt="About Me Illustration"
-                className="rounded-xl w-full h-auto object-cover transition-all duration-500 ease-out"
-              />
-              {/* Colored overlay for hover tint */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#8e2489ff]/30 to-[#a949a8ff]/20 opacity-0 hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>
