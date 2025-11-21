@@ -118,7 +118,7 @@ export default function ProjectsSection() {
         {/* Optional 'Show More' Button at bottom */}
         <div className="mt-16 text-center">
             <a 
-                href="https://github.com/YOUR_GITHUB_USERNAME" 
+                href="https://github.com/tharusha-liyanage" 
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-300 transform hover:scale-105 backdrop-blur-md"

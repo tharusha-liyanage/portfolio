@@ -13,14 +13,13 @@ export const PROJECTS_DATA = [
         title: "Personalized micro tutor (AI/RAG)-ongoing project",
         description: "Develop an AI-powered microtutor system capable of providing personalized learning support using Generative AI, RAG, and LLMs.",
         technologies: ["Generative AI", "Agentic AI", "RAG", "LLMs"],
-        github: "#",
         imageSrc: img4, // Updated image
     },
     {
         title: "CoralStay (Hotel & Tour Booking)",
         description: "A web application for hotel rooms and coral reef tour bookings, featuring virtual reef experiences and a full admin panel.",
         technologies: ["React", "Node.js", "Next.js", "MongoDB"],
-        github: "https://github.com/github-link/Coral-Stay_Frontend",
+        github: "https://github.com/Maheesha-Nethmina/Coral-Stay_Frontend",
         imageSrc: img5, // Updated image
     },
     {
@@ -34,7 +33,7 @@ export const PROJECTS_DATA = [
         title: "LifeLine (Donation System)",
         description: "Platform enabling users to view verified medical cases, make secure donations, and engage volunteers, ensuring transparency.",
         technologies: ["PHP", "Bootstrap", "MySQL"],
-        github: "https://github.com/github-link/Life-Line",
+        github: "https://github.com/Maheesha-Nethmina/Life-Line",
         imageSrc: img6, // Updated image
     },
     {
@@ -48,7 +47,7 @@ export const PROJECTS_DATA = [
         title: "TourGuide(Travel website)",
         description: "Developed a travel website that includes User friendly Home Page, an Informative Destination Page, a Convenient Hotel Page, and an Up to date News Page",
         technologies: ["PHP", "Bootstrap", "MySQL"],
-        github: "https://github.com/tharusha-liyanage/foodHub",
+        github: "https://github.com/tharusha-liyanage/TourGuide-Srilanka",
         imageSrc: img8, // Added 5th project
     },
 ];

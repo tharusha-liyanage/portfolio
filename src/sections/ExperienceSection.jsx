@@ -22,8 +22,7 @@ export default function ExperienceSection() {
         
         {/* ================= HEADER ================= */}
         <div className="text-center mb-20">
-           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
-          </div>
+           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             Education & <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Experience</span>
           </h2>

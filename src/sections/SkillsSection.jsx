@@ -45,7 +45,7 @@ export default function SkillsSection() {
                          bg-[#3a0c38ff] backdrop-blur-lg border border-white/10 
                          rounded-2xl p-4 sm:p-6 
                          transition-all duration-300
-                         hover:scale-105 hover:bg-white/10 
+                         hover:scale-105 hover:bg-[#590a55ff] 
                          hover:shadow-xl hover:shadow-purple-500/30"
             >
               <div className="flex flex-col items-center justify-center space-y-4">
