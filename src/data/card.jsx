@@ -4,6 +4,9 @@ export const Card = ({ children, delay = 0, className = '' }) => {
     const ref = React.useRef(null);
 
     useEffect(() => {
+        const node = ref.current;
+        if (!node) return undefined;
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -13,13 +16,11 @@ export const Card = ({ children, delay = 0, className = '' }) => {
             },
             { threshold: 0.1 }
         );
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
+
+        observer.observe(node);
+
         return () => {
-            if (ref.current) {
-                if (ref.current) observer.unobserve(ref.current);
-            }
+            observer.unobserve(node);
         };
     }, [delay]);
 

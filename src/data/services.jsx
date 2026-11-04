@@ -1,38 +1,35 @@
-import { Code, Zap } from "lucide-react";
-import { Layout } from "lucide-react";
-import { Server } from "lucide-react";
+import { Bot, Code2, ShieldCheck } from "lucide-react";
 
 export const SERVICES_DATA = [
   {
-        icon: <Code className="w-6 h-6 text-[#c084fc]" />, // Updated color
-        title: "Full-Stack Development",
-        description: "Writing clean, maintainable code and delivering responsive, high-performance applications.",
-        details: [
-            "Frontend: React, Next.js, Bootstrap, Tailwind CSS",
-            "Backend: Node.js, PHP, Spring Boot",
-            "Database: MongoDB, MySQL, PostgreSQL",
-        ]
-    },
-    {
-    icon: <Layout className="w-6 h-6 text-[#38bdf8]" />, // sky blue
-    title: "Front-End Development",
+    icon: <Code2 className="h-6 w-6 text-violet-600" />,
+    title: "Full-Stack Web Development",
     description:
-      "Building visually appealing, responsive, and user-friendly interfaces using modern frameworks and tools.",
+      "Building end-to-end scalable web applications with modern frontend and backend technologies.",
     details: [
-      "Languages & Tools: HTML, CSS, JavaScript",
-      "Frameworks: React, Next.js",
-      "Styling: Tailwind CSS, Bootstrap",
+      "Frontend: React, Next.js",
+      "Backend: Node.js, Spring Boot",
     ],
   },
   {
-    icon: <Server className="w-6 h-6 text-[#34d399]" />, // green tone
-    title: "Back-End Development",
+    icon: <Bot className="h-6 w-6 text-cyan-700" />,
+    title: "AI & Agentic Systems",
     description:
-      "Designing robust APIs and managing databases to ensure secure, efficient, and scalable server-side solutions.",
+      "Building intelligent, personalized RAG applications and agentic systems.",
     details: [
-      "Languages & Frameworks: Node.js, PHP, Spring Boot",
-      "Databases: MySQL, PostgreSQL, MongoDB",
-      "Concepts: REST APIs, Authentication, MVC Architecture",
+      "AI frameworks: LangChain, CrewAI",
+      "Vector database and API: Pinecone, FastAPI",
+    ],
+  },
+  {
+    icon: <ShieldCheck className="h-6 w-6 text-violet-600" />,
+    title: "Enterprise Solutions & QA",
+    description:
+      "Developing secure applications and responsive user interfaces, backed by thorough end-to-end functional testing.",
+    details: [
+      "Secure, reliable enterprise applications",
+      "Responsive user interfaces",
+      "End-to-end functional testing",
     ],
   },
 ];

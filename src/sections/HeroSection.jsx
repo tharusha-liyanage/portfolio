@@ -1,162 +1,158 @@
-// src/components/HeroSection.jsx
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Github, Linkedin, Download, ArrowRight } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HERO_DATA } from "../data/hero";
 import { TypeAnimation } from "react-type-animation";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function HeroSection() {
+  const sectionRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
+
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const nameLine = ".hero-name";
+    const role = ".hero-role";
+    const description = ".hero-description";
+    const buttons = ".hero-actions > a, .hero-socials > a";
+    const portrait = ".hero-portrait";
+
+    gsap.set([role, description, buttons, portrait], {
+      autoAlpha: 0,
+      y: 32,
+    });
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    tl.fromTo(nameLine, { autoAlpha: 0, y: 50 }, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out",
+    })
+      .to(role, { autoAlpha: 1, y: 0, duration: 0.7 })
+      .to(description, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.35")
+      .to(portrait, { autoAlpha: 1, y: 0, scale: 1, duration: 1 }, "-=0.35")
+      .to(buttons, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.15 });
+
+    const orb = ".hero-orb";
+    gsap.to(orb, {
+      yPercent: 10,
+      xPercent: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      duration: 9,
+      stagger: 0.5,
+    });
+    gsap.to(".hero-ring", {
+      rotate: 360,
+      duration: 32,
+      repeat: -1,
+      ease: "none",
+    });
+  }, { scope: sectionRef });
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-20 pb-16 md:pt-32 overflow-hidden bg-[#0a0a0a]"
+      ref={sectionRef}
+      className="section-shell relative flex min-h-screen items-center overflow-hidden bg-white pb-16 pt-20 dark:bg-[#0B0F19] sm:pt-24 md:pt-28"
     >
-      {/* ================= CSS ANIMATIONS ================= */}
-      <style>{`
-        @keyframes float {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-          100% { transform: translateY(0px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .text-gradient {
-          background: linear-gradient(to right, #c084fc, #e879f9, #22d3ee);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
+      <div className="hero-orb absolute -left-20 top-8 h-64 w-64 rounded-full bg-violet-300/35 blur-[120px]" />
+      <div className="hero-orb absolute bottom-10 right-[-3rem] h-72 w-72 rounded-full bg-cyan-200/45 blur-[120px]" />
+      <div className="hero-background absolute inset-0" />
+      <div className="hero-ring pointer-events-none absolute right-[8%] top-[18%] hidden h-80 w-80 rounded-full border border-dashed border-violet-300/30 lg:block" />
+      <div className="hero-ring pointer-events-none absolute right-[12%] top-[22%] hidden h-64 w-64 rounded-full border border-cyan-300/25 lg:block" />
+      <div className="hero-grid-pattern absolute inset-0 opacity-30" />
 
-      {/* ================= BACKGROUND EFFECTS ================= */}
-      {/* 1. Main Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-[#1a0b2e] to-black z-0" />
-
-      {/* 2. Animated "Lightning" Glow Blobs */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600/30 rounded-full blur-[128px] animate-pulse" />
-      <div className="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px] animate-pulse delay-700" />
-
-      {/* 3. Subtle Grid Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>
-
-      {/* ================= MAIN CONTENT ================= */}
-      <div className="mx-auto px-6 sm:px-10 lg:px-16 relative z-10 w-full max-w-7xl">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-8">
-          
-          {/* Left Content */}
-          <div className="w-full lg:w-3/5 text-center lg:text-left space-y-6">
-            
-            {/* Intro Tag */}
-            <div className="inline-block px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-md animate-fadeIn">
-              <span className="text-purple-300 font-medium tracking-wide text-sm sm:text-base">
-                👋 Welcome to my portfolio
-              </span>
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+        <div className="flex flex-col items-center justify-between gap-12 lg:flex-row lg:gap-10">
+          <div className="w-full text-center lg:w-3/5 lg:text-left">
+            <div className="hero-intro inline-flex items-center rounded-full border border-violet-300/50 bg-white/75 px-4 py-2 shadow-[0_8px_28px_rgba(117,68,216,0.11)] backdrop-blur-md">
+              <span className="text-sm font-medium tracking-[0.12em] text-violet-700 uppercase">Welcome to my portfolio</span>
             </div>
 
-            {/* Name & Roles */}
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight animate-slideInLeft">
-                Hi, I'm <br className="hidden lg:block" />
+            <div className="mt-6 space-y-3">
+              <h1 className="hero-name text-4xl font-black tracking-[-0.06em] text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                Hi, I&apos;m <br className="hidden lg:block" />
                 <span className="text-gradient">{HERO_DATA.name}</span>
               </h1>
-              
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-light text-gray-400 animate-slideInLeft delay-100 h-[50px]">
-                I am a{" "}
+
+              <h2 className="hero-role flex min-h-[3rem] items-center justify-center gap-2 text-xl font-light text-slate-600 sm:text-2xl md:text-3xl lg:justify-start">
+                <span>I am a</span>
                 <TypeAnimation
-                  sequence={[
-                    "Full-Stack Developer",
-                    2000,
-                    "Frontend Developer",
-                    2000,
-                    "Backend Developer",
-                    2000,
-                  ]}
+                  sequence={["Software Engineer", 2000, "Full-Stack Developer", 2000]}
                   wrapper="span"
                   speed={50}
                   repeat={Infinity}
-                  className="font-semibold text-cyan-400"
+                  className="font-semibold text-cyan-700"
                 />
               </h2>
             </div>
 
-            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Building seamless web experiences with modern technologies. 
-              Let's turn your ideas into reality.
+            <p className="hero-description mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg lg:mx-0">
+              Building seamless web experiences with modern technologies. Let&apos;s turn your ideas into reality.
             </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4 animate-fadeIn delay-700">
-              {/* Primary Button */}
+            <div className="hero-actions mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
               <a
                 href="#projects"
-                className="group relative px-8 py-3.5 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)]"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-700 to-violet-600 px-7 py-3.5 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,68,216,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_36px_rgba(117,68,216,0.3)]"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  My Work <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
+                My Work
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
 
-              {/* Secondary Button */}
               <a
                 href={HERO_DATA.cvLink}
                 download
-                className="relative px-8 py-3.5 text-white font-semibold rounded-full overflow-hidden group border border-purple-500/50 hover:border-purple-400 transition-all hover:scale-105 bg-white/5 backdrop-blur-sm"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-violet-300 bg-white/80 px-7 py-3.5 text-sm font-semibold text-violet-800 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:bg-violet-50"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-                <span className="relative z-10 flex items-center gap-2">
-                   Download CV <Download className="w-4 h-4" />
-                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-violet-500/10 via-violet-500/0 to-cyan-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <span className="relative inline-flex items-center gap-2">Download CV <Download className="h-4 w-4" /></span>
               </a>
             </div>
 
-            {/* Social Buttons */}
-            <div className="flex items-center justify-center lg:justify-start gap-6 pt-8 text-gray-400">
+            <div className="hero-socials mt-8 flex items-center justify-center gap-5 lg:justify-start">
               <a
                 href={HERO_DATA.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                className="rounded-full border border-violet-200 bg-white/75 p-3 text-violet-700 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:bg-violet-50"
+                aria-label="GitHub profile"
               >
-                <Github className="w-8 h-8" />
+                <Github className="h-6 w-6" />
               </a>
               <a
                 href={HERO_DATA.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#0077b5] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(0,119,181,0.5)]"
+                className="rounded-full border border-cyan-200 bg-white/75 p-3 text-cyan-700 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-400 hover:bg-cyan-50"
+                aria-label="LinkedIn profile"
               >
-                <Linkedin className="w-8 h-8" />
+                <Linkedin className="h-6 w-6" />
               </a>
             </div>
           </div>
 
-          {/* Right Image Section */}
-          <div
-            className="w-full lg:w-2/5 flex justify-center relative"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            {/* Image Container with Glow/Lightning Border */}
-            <div className="relative animate-float">
-              {/* The Glow Effect behind image */}
-              <div className={`absolute -inset-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full blur opacity-70 transition-opacity duration-500 ${isHovering ? "opacity-100 blur-md" : "opacity-70"}`}></div>
-              
-              {/* The Image Itself */}
-              <div className="relative rounded-full p-1 bg-[#1a0b2e]">
-                <img
-                  src={HERO_DATA.imageSrc}
-                  alt={HERO_DATA.name}
-                  className={`w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover rounded-full border-2 border-white/10 shadow-2xl transition-transform duration-500 ${
-                    isHovering ? "scale-105 grayscale-0" : "grayscale-[10%]"
-                  }`}
-                />
-              </div>
-
-              
+          <div className="hero-portrait relative flex w-full items-center justify-center lg:w-2/5">
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,_rgba(139,92,246,0.18),_rgba(34,211,238,0.12),_transparent_65%)] blur-2xl" />
+            <div className="float-gently relative overflow-hidden rounded-full border border-violet-200 bg-white/80 p-2 shadow-[0_18px_55px_rgba(117,68,216,0.18)]">
+              <img
+                src={HERO_DATA.imageSrc}
+                alt={HERO_DATA.name}
+                className={`h-64 w-64 rounded-full object-cover border border-white/80 transition-all duration-500 sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-[22rem] lg:w-[22rem] ${
+                  isHovering ? "scale-105" : "scale-100"
+                }`}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              />
             </div>
           </div>
-
         </div>
       </div>
     </section>

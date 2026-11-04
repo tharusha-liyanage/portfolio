@@ -1,132 +1,259 @@
-// src/components/ProjectsSection.jsx
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRight, Github } from "lucide-react";
 import { PROJECTS_DATA } from "../data/projects";
-import { Github, ExternalLink, Layers, ArrowRight } from "lucide-react";
-import { Card } from "../data/card";
 
-const PROJECTS = PROJECTS_DATA;
+gsap.registerPlugin(Flip, ScrollTrigger);
+
+const PROJECT_FILTERS = ["All", "Full-Stack", "AI/Research", "Front-End"];
 
 export default function ProjectsSection() {
+  const sectionRef = useRef(null);
+  const flipStateRef = useRef(null);
+  const previousProjectsRef = useRef(PROJECTS_DATA);
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const visibleProjects = PROJECTS_DATA.filter(
+    (project) => activeFilter === "All" || project.category === activeFilter
+  );
+
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.set(".project-card", { autoAlpha: 0, y: 50 });
+    gsap.set(".project-filters", { autoAlpha: 0, y: 16 });
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+        once: true,
+      },
+    })
+      .to(".project-filters", { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" })
+      .to(".project-card", {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power3.out",
+      });
+  }, { scope: sectionRef });
+
+  useLayoutEffect(() => {
+    const flipState = flipStateRef.current;
+    if (!flipState) return;
+
+    const previousTitles = new Set(previousProjectsRef.current.map((project) => project.title));
+    const enteringCards = Array.from(sectionRef.current.querySelectorAll(".project-card"))
+      .filter((card) => !previousTitles.has(card.dataset.projectTitle));
+
+    Flip.from(flipState, {
+      duration: 0.6,
+      ease: "power2.inOut",
+      absolute: true,
+      onEnter: (elements) => gsap.fromTo(
+        elements,
+        { autoAlpha: 0, scale: 0.95 },
+        { autoAlpha: 1, scale: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" }
+      ),
+    });
+
+    if (enteringCards.length) {
+      gsap.fromTo(
+        enteringCards,
+        { autoAlpha: 0, scale: 0.95 },
+        { autoAlpha: 1, scale: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" }
+      );
+    }
+
+    previousProjectsRef.current = visibleProjects;
+    flipStateRef.current = null;
+  }, [activeFilter, visibleProjects]);
+
+  const handleFilterChange = (filter) => {
+    if (filter === activeFilter) return;
+
+    const cardsToRemove = Array.from(sectionRef.current.querySelectorAll(".project-card"))
+      .filter((card) => filter !== "All" && card.dataset.category !== filter);
+
+    const applyFilter = () => {
+      flipStateRef.current = Flip.getState(".project-card");
+      setActiveFilter(filter);
+    };
+
+    if (cardsToRemove.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.to(cardsToRemove, {
+        autoAlpha: 0,
+        scale: 0.95,
+        duration: 0.25,
+        stagger: 0.03,
+        onComplete: applyFilter,
+      });
+    } else {
+      applyFilter();
+    }
+  };
+
+  const handleCardMouseEnter = (event) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const card = event.currentTarget;
+    gsap.to(card, {
+      y: -10,
+      boxShadow: "0 28px 60px rgba(54, 50, 91, 0.22)",
+      duration: 0.35,
+      ease: "power2.out",
+    });
+    gsap.to(card.querySelector(".project-image"), {
+      scale: 1.1,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  };
+
+  const handleCardMouseLeave = (event) => {
+    const card = event.currentTarget;
+    gsap.to(card, {
+      y: 0,
+      boxShadow: "0 18px 48px rgba(54, 50, 91, 0.08)",
+      duration: 0.35,
+      ease: "power2.out",
+    });
+    gsap.to(card.querySelector(".project-image"), {
+      scale: 1,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  };
+
+  const renderProjectLink = (project, type) => {
+    const isSource = type === "Source Code";
+    const href = isSource ? project.github : project.liveDemo;
+    const className =
+      "inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition " +
+      (href
+        ? "border-violet-200 bg-white/80 text-violet-800 hover:border-violet-400 hover:bg-violet-50"
+        : "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400");
+
+    if (!href) {
+      return (
+        <button key={type} type="button" className={className} disabled>
+          {type}
+        </button>
+      );
+    }
+
+    return (
+      <a
+        key={type}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className={className}
+      >
+        {type}
+        {isSource ? <Github className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+      </a>
+    );
+  };
+
   return (
     <section
       id="projects"
-      className="relative py-10 lg:py-28 bg-[#290527ff] overflow-hidden"
+      ref={sectionRef}
+      className="section-shell relative overflow-hidden py-20 lg:py-28"
     >
-      {/* ================= BACKGROUND LIGHTNING EFFECTS ================= */}
-      {/* Purple Glow (Top Right) */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse" />
-      {/* Cyan Glow (Bottom Left) */}
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] animate-pulse delay-700" />
-      {/* Noise Texture */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>
+      <div className="absolute right-[-2rem] top-0 h-80 w-80 rounded-full bg-violet-600/12 blur-[120px]" />
+      <div className="absolute left-[-3rem] bottom-0 h-80 w-80 rounded-full bg-cyan-500/12 blur-[120px]" />
 
-      <div className="mx-auto px-6 sm:px-10 lg:px-16 relative z-10 max-w-7xl">
-        
-        {/* ================= HEADER ================= */}
-        <div className="text-center mb-16">
-           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Projects</span>
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+        <div className="section-heading mb-10">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+            Featured <span className="text-gradient">Projects</span>
           </h2>
-          <div className="w-24 h-1.5 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full mx-auto"></div>
+          <div className="section-heading__bar mt-6" />
         </div>
 
-        {/* ================= PROJECTS GRID ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROJECTS.map((project, index) => (
-            <Card
-              key={project.title}
-              delay={index * 150}
-              className="group relative rounded-2xl bg-[#12071f] border border-white/10 overflow-hidden transition-all duration-500 hover:-translate-y-2 h-full flex flex-col"
+        <div className="project-filters mb-10 flex flex-wrap justify-center gap-3">
+          {PROJECT_FILTERS.map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => handleFilterChange(filter)}
+              aria-pressed={activeFilter === filter}
+              className={`rounded-full border px-5 py-2 text-sm font-semibold transition ${
+                activeFilter === filter
+                  ? "border-violet-600 bg-violet-600 text-white shadow-md"
+                  : "border-violet-200 bg-white/80 text-violet-800 hover:border-violet-400 hover:bg-violet-50"
+              }`}
             >
-              {/* --- LIGHTNING HOVER BORDER EFFECT --- */}
-              {/* Hidden by default, appears as a blurred glowing rim on hover */}
-              <div className="absolute -inset-[2px] bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-70 blur-md transition-opacity duration-500" />
-              {/* Dark background to cover the center of the glow */}
-              <div className="absolute inset-[1px] bg-[#0a0a0a] rounded-2xl z-10" />
+              {filter}
+            </button>
+          ))}
+        </div>
 
-              {/* --- CARD CONTENT --- */}
-              <div className="relative z-20 flex flex-col h-full">
-                
-                {/* Image Area */}
-                <div className="relative w-full h-56 overflow-hidden rounded-t-xl border-b border-white/5">
+        <div className="grid items-stretch gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {visibleProjects.map((project) => (
+            <article
+              key={project.title}
+              data-project-title={project.title}
+              data-category={project.category}
+              className="project-card light-card group relative flex h-full flex-col overflow-hidden rounded-[28px] transition-[border-color] duration-300 hover:border-violet-300"
+              onMouseEnter={handleCardMouseEnter}
+              onMouseLeave={handleCardMouseLeave}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 via-transparent to-cyan-100/50 opacity-0 transition duration-500 group-hover:opacity-100" />
+              <div className="relative z-10 flex h-full flex-col">
+                <div className="relative h-60 overflow-hidden border-b border-violet-100 bg-violet-50">
                   <img
-                    src={project.imageSrc} // Changed from project.image to project.imageSrc based on your code
+                    src={project.imageSrc}
                     alt={project.title}
-                    className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+                    className="project-image h-full w-full object-cover"
                   />
-                  
-                  {/* Dark Overlay on Hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px] flex items-center justify-center gap-4">
-                    {/* Floating Action Buttons */}
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 p-3 bg-white text-black rounded-full hover:bg-cyan-400 hover:scale-110 shadow-lg"
-                        title="View Code"
-                      >
-                        <Github className="w-5 h-5" />
-                      </a>
-                    )}
-                    {/* If you have a live demo link in your data, add it here similarly */}
-                  </div>
                 </div>
 
-                {/* Text Content Area */}
-                <div className="p-6 flex flex-col flex-grow bg-[#0a0a0a]">
-                  
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="mb-2 text-xl font-bold text-slate-900 transition duration-300 group-hover:text-violet-700">
                     {project.title}
                   </h3>
-                  
-                  <p className="text-gray-400 text-sm line-clamp-3 mb-6 flex-grow leading-relaxed">
+                  <p className="mb-6 flex-1 text-sm leading-relaxed text-slate-300">
                     {project.description}
                   </p>
 
-                  {/* Tech Stack Tags */}
-                  <div className="flex flex-wrap gap-2 mt-auto mb-4">
-                    {project.technologies.map((tech, i) => (
+                  <div className="mb-5 flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
                       <span
-                        key={i}
-                        className="px-3 py-1 text-[10px] uppercase tracking-wider font-semibold text-cyan-200 bg-cyan-900/20 border border-cyan-500/20 rounded-md hover:bg-cyan-500/20 transition-colors"
+                        key={`${project.title}-${tech}`}
+                        className="rounded-md border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-800"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  {/* Bottom Link (View Project) */}
-                  {project.github && (
-                    <a 
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors group/link"
-                    >
-                      View Project 
-                      <ArrowRight className="w-4 h-4 ml-1 transform transition-transform group-hover/link:translate-x-1" />
-                    </a>
-                  )}
+                  <div className="mt-auto flex flex-wrap gap-3">
+                    {renderProjectLink(project, "Source Code")}
+                  </div>
                 </div>
               </div>
-            </Card>
+            </article>
           ))}
         </div>
-        
-        {/* Optional 'Show More' Button at bottom */}
-        <div className="mt-16 text-center">
-            <a 
-                href="https://github.com/tharusha-liyanage" 
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-300 transform hover:scale-105 backdrop-blur-md"
-            >
-                See More on GitHub <Github className="w-4 h-4" />
-            </a>
-        </div>
 
+        <div className="mt-16 text-center">
+          <a
+            href="https://github.com/tharusha-liyanage"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-7 py-3 text-sm font-semibold text-violet-800 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:bg-violet-50"
+          >
+            See More on GitHub <Github className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </section>
   );

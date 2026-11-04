@@ -1,69 +1,110 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-
+import React, { useEffect, useMemo, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 function Nav() {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  const navItems = useMemo(
+    () => [
+      { name: "Home", href: "#home" },
+      { name: "About", href: "#about" },
+      { name: "Services", href: "#services" },
+      { name: "Projects", href: "#projects" },
+      { name: "Experience", href: "#experience" },
+      { name: "Contact", href: "#contact" },
+    ],
+    []
+  );
 
-    const navItems = [
-        { name: "Home", href: "#home" },
-        { name: "About", href: "#about" },
-        { name: "Services", href: "#services" },
-        { name: "Projects", href: "#projects" },
-        { name: "Experience", href: "#experience" },
-        { name: "Contact", href: "#contact" },
-    ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 24);
+
+      const sectionOffsets = navItems
+        .map((item) => ({
+          id: item.href.replace("#", ""),
+          offset: document.getElementById(item.href.replace("#", ""))?.offsetTop ?? 0,
+        }))
+        .filter((item) => item.id);
+
+      let current = "home";
+      for (const item of sectionOffsets) {
+        if (window.scrollY >= item.offset - 160) {
+          current = item.id;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [navItems]);
+
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#1a0b2c]/95 backdrop-blur-md shadow-xl border-b border-[#5a3a7b]/50' : 'bg-transparent'}`}> {/* Updated colors */}
-            <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <a href="#home" className="text-2xl font-bold text-[#8e2489ff] hover:text-white transition-colors"> {/* Updated color */}
-                    Tharusha<span className="text-white">.L</span>
-                </a>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-white/85 backdrop-blur-xl border-b border-violet-100 shadow-[0_10px_35px_rgba(54,50,91,0.08)]" : "bg-transparent"
+      }`}
+    >
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
+        <a href="#home" className="group flex items-center text-2xl font-black tracking-tight text-slate-900">
+          <span className="text-gradient">Tharusha</span>
+          <span className="text-slate-900">.L</span>
+        </a>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex space-x-8">
-                    {navItems.map(item => (
-                        <a key={item.name} href={item.href}
-                            className="text-gray-300 font-medium hover:text-[#e0b0ff] transition-colors relative group"> {/* Updated hover color */}
-                            {item.name}
-                            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-[#a955f7] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span> {/* Updated color */}
-                        </a>
-                    ))}
-                </div>
+        <div className="hidden items-center gap-8 md:flex">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href.replace("#", "");
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                className={`group relative text-sm font-medium transition-colors duration-200 ${
+                  isActive ? "text-violet-800" : "text-slate-600 hover:text-violet-800"
+                }`}
+              >
+                {item.name}
+                <span
+                  className={`absolute -bottom-2 left-0 h-0.5 w-full rounded-full transition-all duration-300 ${
+                    isActive ? "bg-gradient-to-r from-violet-500 to-cyan-400" : "scale-x-0 bg-transparent group-hover:scale-x-100"
+                  }`}
+                />
+              </a>
+            );
+          })}
+        </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden text-white p-2 focus:outline-none"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}></path>
-                    </svg>
-                </button>
-            </nav>
+        <button
+          type="button"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="inline-flex items-center justify-center rounded-full border border-violet-100 bg-white/80 p-2 text-slate-700 shadow-sm transition hover:border-violet-300 hover:bg-violet-50 md:hidden"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        >
+          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </nav>
 
-            {/* Mobile Menu Dropdown */}
-            <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-[#1a0b2c]/95 border-t border-[#5a3a7b]/50 pb-2`}> {/* Updated colors */}
-                <div className="flex flex-col space-y-2 px-4">
-                    {navItems.map(item => (
-                        <a key={item.name} href={item.href}
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block px-3 py-2 text-gray-300 hover:bg-[#a955f7]/50 rounded-md transition-colors font-medium"> {/* Updated hover color */}
-                            {item.name}
-                        </a>
-                    ))}
-                </div>
-            </div>
-        </header>
-  )
+      <div className={`overflow-hidden transition-all duration-300 md:hidden ${isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"}`}>
+        <div className="mx-4 mb-4 rounded-2xl border border-violet-100 bg-white/95 p-3 shadow-lg backdrop-blur-xl">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)}
+              className={`block rounded-xl px-3 py-2 text-sm font-medium transition ${
+                activeSection === item.href.replace("#", "") ? "bg-violet-50 text-violet-800" : "text-slate-600 hover:bg-violet-50 hover:text-violet-800"
+              }`}
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
 }
 
-export default Nav
+export default Nav;

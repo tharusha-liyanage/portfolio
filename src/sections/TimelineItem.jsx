@@ -1,34 +1,19 @@
-import { motion } from "framer-motion";
-
 const TimelineItem = ({ data, delay }) => {
   return (
-    <motion.div
-      className="flex items-center gap-5 p-5 rounded-xl cursor-pointer shadow-md 
-             bg-gradient-to-r from-[#3e2d3dff] to-[#74225bff] 
-             hover:shadow-[#ffb0fc]/60 transition-all duration-300"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      transition={{ delay: delay / 1000, duration: 0.6, ease: 'easeOut' }}
+    <div
+      className="light-card flex items-center gap-5 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:border-violet-300"
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {data.img && (
-        <motion.img
-          src={data.img}
-          alt={data.title}
-          className="w-16 h-auto object-cover  border-2 border-[#a949a8ff]"
-          whileHover={{ rotate: 5 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-        />
+        <img src={data.img} alt={data.title} className="h-auto w-16 object-cover border-2 border-[#a949a8ff]" />
       )}
 
       <div className="text-left">
-        <h3 className="font-bold text-white text-lg md:text-xl transition-colors duration-300 hover:text-[#792376ff]">
-          {data.title}
-        </h3>
-        <p className="text-gray-300 text-sm md:text-base">{data.institution}</p>
-        <span className="text-gray-400 text-xs md:text-sm">{data.duration}</span>
+        <h3 className="text-lg font-bold text-slate-900 transition-colors duration-300 hover:text-violet-700 md:text-xl">{data.title}</h3>
+        <p className="text-sm text-gray-300 md:text-base">{data.institution}</p>
+        <span className="text-xs text-gray-400 md:text-sm">{data.duration}</span>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

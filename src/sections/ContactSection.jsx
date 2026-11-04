@@ -1,150 +1,225 @@
-import React, { useState } from "react";
-import { Send, Mail, Smartphone, Github, Linkedin, ArrowRight, Check } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  ArrowRight,
+  Check,
+  Copy,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Send,
+  Smartphone,
+} from "lucide-react";
 import { HERO_DATA } from "../data/hero";
-import { motion } from "framer-motion";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const contactItems = [
+  {
+    id: "email",
+    icon: Mail,
+    text: HERO_DATA.contactEmail,
+    sub: "Send me an email",
+    titleClass: "group-hover:text-pink-700",
+    copyValue: HERO_DATA.contactEmail,
+  },
+  {
+    id: "phone",
+    icon: Smartphone,
+    text: HERO_DATA.contactPhone,
+    sub: "Mobile number · Click to copy",
+    titleClass: "group-hover:text-cyan-700",
+    copyValue: HERO_DATA.contactPhone,
+  },
+  {
+    id: "location",
+    icon: MapPin,
+    text: "Galle, Sri Lanka",
+    sub: "Location",
+    titleClass: "group-hover:text-violet-700",
+  },
+  {
+    id: "github",
+    icon: Github,
+    text: "GitHub",
+    sub: "Check my code",
+    link: HERO_DATA.github,
+    titleClass: "group-hover:text-slate-700",
+  },
+  {
+    id: "linkedin",
+    icon: Linkedin,
+    text: "LinkedIn",
+    sub: "Let's connect",
+    link: HERO_DATA.linkedin,
+    titleClass: "group-hover:text-blue-700",
+  },
+];
 
 export default function ContactSection() {
-    // State to manage the copy confirmation for a brief period
-    const [copied, setCopied] = useState(false);
+  const sectionRef = useRef(null);
+  const copyTimeoutRef = useRef(null);
+  const [copiedCard, setCopiedCard] = useState(null);
 
-    // Function to handle copying the phone number
-    const handleCopyPhone = (event) => {
-        // If you want to prevent the default action (initiating a call) and ONLY copy, uncomment the line below.
-        // event.preventDefault(); 
+  useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
 
-        const phoneNumber = HERO_DATA.contactPhone;
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-        // Use the modern Clipboard API to copy the text
-        navigator.clipboard.writeText(phoneNumber.replace(/\s/g, '')).then(() => {
-            setCopied(true);
-            // Reset 'copied' state after 2 seconds
-            setTimeout(() => setCopied(false), 2000); 
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-            // Fallback for older browsers or if Clipboard API is restricted
-            alert(`Could not automatically copy. Please copy manually: ${phoneNumber}`);
-        });
+    const section = sectionRef.current;
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 85%",
+        once: true,
+      },
+    });
+
+    timeline
+      .fromTo(
+        section.querySelector(".contact-heading"),
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+      )
+      .fromTo(
+        section.querySelectorAll(".contact-card"),
+        { scale: 0.8, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "back.out(1.5)",
+        }
+      );
+  }, { scope: sectionRef });
+
+  const handleCopy = async (item) => {
+    try {
+      await navigator.clipboard.writeText(item.copyValue);
+      clearTimeout(copyTimeoutRef.current);
+      setCopiedCard(item.id);
+      copyTimeoutRef.current = setTimeout(() => setCopiedCard(null), 2000);
+    } catch (error) {
+      console.error("Failed to copy contact information:", error);
+      alert(`Could not automatically copy. Please copy manually: ${item.copyValue}`);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const subject = encodeURIComponent(formData.get("subject"));
+    const body = encodeURIComponent(
+      `Name: ${formData.get("name")}\nEmail: ${formData.get("email")}\n\n${formData.get("message")}`
+    );
+    window.location.href = `mailto:${HERO_DATA.contactEmail}?subject=${subject}&body=${body}`;
+  };
+
+  const animateCardHover = (event, isEntering) => {
+    const card = event.currentTarget;
+    gsap.to(card, {
+      y: isEntering ? -8 : 0,
+      duration: 0.3,
+      ease: "power2.out",
+      boxShadow: isEntering
+        ? "0 18px 30px rgba(53, 47, 91, 0.16)"
+        : "0 1px 2px rgba(53, 47, 91, 0.05)",
+    });
+  };
+
+  const renderContactCard = (item) => {
+    const Icon = item.icon;
+    const isCopied = copiedCard === item.id;
+    const contactLink = item.id === "email"
+      ? "mailto:tharushalakchani@gmail.com"
+      : item.id === "phone"
+        ? "tel:+94766210979"
+        : item.link;
+    const content = (
+      <a
+        href={contactLink}
+        target={item.link ? "_blank" : undefined}
+        rel={item.link ? "noopener noreferrer" : undefined}
+        className="flex min-w-0 flex-1 items-center gap-4 outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2"
+      >
+        <span className="contact-card-icon rounded-xl border border-violet-100 bg-violet-50 p-3 text-violet-700">
+          <Icon className="h-5 w-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="mb-1 block text-[11px] uppercase tracking-[0.15em] text-slate-500">
+            {item.sub}
+          </span>
+          <span className={`block truncate text-sm font-semibold text-slate-900 sm:text-base ${item.titleClass}`}>
+            {item.text}
+          </span>
+        </span>
+        {item.link && <ArrowRight className="h-4 w-4 shrink-0 text-slate-500" />}
+      </a>
+    );
+    const className =
+      "contact-card group flex w-full items-center gap-2 rounded-2xl border border-violet-100 bg-white/80 p-4 text-left shadow-sm transition-colors hover:border-violet-300 hover:bg-violet-50";
+    const hoverProps = {
+      onMouseEnter: (event) => animateCardHover(event, true),
+      onMouseLeave: (event) => animateCardHover(event, false),
     };
 
-    const contactItems = [
-        {
-            icon: <Mail className="w-6 h-6" />,
-            text: HERO_DATA.contactEmail,
-            sub: "Send me an email",
-            link: `mailto:${HERO_DATA.contactEmail}`,
-            color: "group-hover:text-pink-400",
-            border: "group-hover:border-pink-500/50",
-            bg: "group-hover:bg-pink-500/10",
-        },
-        {
-            icon: <Smartphone className="w-6 h-6" />,
-            text: HERO_DATA.contactPhone,
-            sub: "Mobile Number (Click to Copy)",
-            color: "group-hover:text-cyan-400",
-            border: "group-hover:border-cyan-500/50",
-            bg: "group-hover:bg-cyan-500/10",
-            isPhone: true, // Flag for special handling
-        },
-        {
-            icon: <Github className="w-6 h-6" />,
-            text: "GitHub",
-            sub: "Check my code",
-            link: HERO_DATA.github,
-            color: "group-hover:text-white",
-            border: "group-hover:border-white/50",
-            bg: "group-hover:bg-white/10",
-        },
-        {
-            icon: <Linkedin className="w-6 h-6" />,
-            text: "LinkedIn",
-            sub: "Let's connect",
-            link: HERO_DATA.linkedin,
-            color: "group-hover:text-blue-400",
-            border: "group-hover:border-blue-500/50",
-            bg: "group-hover:bg-blue-500/10",
-        },
-    ];
-
     return (
-        <section
-            id="contact"
-            className="relative py-20 lg:py-28 bg-[#0a0a0a] overflow-hidden"
-        >
-            {/* ================= BACKGROUND EFFECTS ================= */}
-            {/* Purple Glow (Center) */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse" />
-            {/* Cyan Glow (Bottom Right) */}
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-600/10 rounded-full blur-[128px]" />
-            {/* Noise Texture */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>
-
-            <div className="container mx-auto px-6 lg:px-8 relative z-10 max-w-4xl">
-                
-                {/* ================= HEADER ================= */}
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                        Let's <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Connect</span>
-                    </h2>
-                    <div className="w-24 h-1.5 bg-gradient-to-r from-purple-400 to-blue-500 rounded-full mx-auto"></div>
-                </div>
-
-                {/* ================= MAIN CARD ================= */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                    className="relative bg-[#12071f]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-12 shadow-2xl overflow-hidden"
-                >
-                    {/* Decorative Background Icon inside the card */}
-                    <div className="absolute -top-10 -right-10 opacity-5 pointer-events-none">
-                        <Send className="w-64 h-64 text-white transform rotate-12" />
-                    </div>
-
-                    <div className="relative z-10 flex flex-col items-center text-center">
-                        
-                        <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed">
-                            I am actively seeking opportunities as a <span className="text-white font-semibold">Software Engineer</span>. 
-                            Feel free to connect or send me an email!
-                        </p>
-
-                        {/* ================= CONTACT GRID ================= */}
-                        <div className="grid sm:grid-cols-2 gap-5 w-full">
-                            {contactItems.map((item, index) => (
-                                <a
-                                    key={index}
-                                    href={item.link}
-                                    // Open non-phone links in a new tab
-                                    target={item.isPhone ? "_self" : "_blank"} 
-                                    rel="noopener noreferrer"
-                                    // Apply the copy handler only to the phone number item
-                                    onClick={item.isPhone ? handleCopyPhone : undefined} 
-                                    className={`group relative flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/5 transition-all duration-300 hover:-translate-y-1 ${item.border} ${item.bg}`}
-                                >
-                                    <div className={`p-3 rounded-lg bg-[#0a0a0a] border border-white/10 text-gray-400 transition-colors duration-300 ${item.color}`}>
-                                        {item.icon}
-                                    </div>
-                                    <div className="text-left">
-                                        <div className="text-xs text-gray-500 font-medium mb-0.5">{item.sub}</div>
-                                        <div className={`text-sm sm:text-base font-bold text-white transition-colors duration-300 ${item.color}`}>
-                                            {/* Conditional Text: Show 'Copied!' if state is true for the phone item */}
-                                            {item.isPhone && copied ? (
-                                                <span className="flex items-center gap-1 text-cyan-400">
-                                                    Copied! <Check className="w-4 h-4" />
-                                                </span>
-                                            ) : (
-                                                item.text
-                                            )}
-                                        </div>
-                                    </div>
-                                    <ArrowRight className="w-4 h-4 ml-auto text-gray-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                </motion.div>
-            </div>
-        </section>
+      <div key={item.id} className={className} {...hoverProps}>
+        {content}
+        {item.copyValue && (
+          <span className="relative shrink-0">
+            <button
+              type="button"
+              onClick={() => handleCopy(item)}
+              aria-label={`Copy ${item.id}`}
+              className={`rounded-md p-2 transition-colors hover:bg-violet-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                isCopied ? "text-emerald-600" : "text-slate-500"
+              }`}
+            >
+              {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            </button>
+            {isCopied && (
+              <span
+                role="status"
+                className="absolute bottom-full right-0 mb-2 whitespace-nowrap rounded bg-slate-900 px-2 py-1 text-xs text-white shadow"
+              >
+                Copied!
+              </span>
+            )}
+          </span>
+        )}
+      </div>
     );
+  };
+
+  return (
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="section-shell relative overflow-hidden py-20 lg:py-28"
+    >
+      <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-[120px]" />
+      <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="contact-heading section-heading mb-12">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+            Let&apos;s <span className="text-gradient">Connect</span>
+          </h2>
+          <div className="section-heading__bar mt-6" />
+        </div>
+
+        <div className="mx-auto grid max-w-5xl grid-cols-1 justify-items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {contactItems.map(renderContactCard)}
+        </div>
+      </div>
+    </section>
+  );
 }

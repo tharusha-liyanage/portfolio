@@ -1,66 +1,81 @@
-// src/components/SkillsSection.jsx
-import React from "react";
-import { SKILLS_DATA } from "../data/skills";
-import { SectionTitle } from "../data/SectionTitle"; // Assuming this component is available
-import { Card } from "../data/card"; // Assuming this is a framer-motion component
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SKILL_CATEGORIES } from "../data/skills";
 import TechIcon from "../data/TechIcon";
 
-const SKILLS = SKILLS_DATA;
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SkillsSection() {
+  const sectionRef = useRef(null);
+
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.set(".skill-category-heading", { autoAlpha: 0, y: 12 });
+    gsap.set(".skill-card", { autoAlpha: 0, scale: 0.8 });
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 75%",
+        once: true,
+      },
+    });
+
+    timeline
+      .to(
+        ".skill-category-heading",
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power2.out" }
+      )
+      .to(
+        ".skill-card",
+        {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        }
+      );
+  }, { scope: sectionRef });
+
   return (
-    <section 
-      id="skills" 
-      className="py-20 lg:py-28 bg-[#0a0a0a] relative overflow-hidden"
-    >
-      {/* ================= BACKGROUND EFFECTS ("Lightning") ================= */}
-      {/* Cyan Glow (Left) */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px] animate-pulse" />
-      {/* Purple Glow (Right) */}
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-600/20 rounded-full blur-[128px] animate-pulse delay-700" />
-      
-      {/* Grid Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>
+    <section id="skills" ref={sectionRef} className="section-shell relative overflow-hidden py-20 lg:py-28">
+      <div className="absolute left-[-5rem] top-1/4 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="absolute bottom-0 right-[-4rem] h-80 w-80 rounded-full bg-violet-500/12 blur-[120px]" />
 
-      <div className="mx-auto px-6 sm:px-10 lg:px-16 relative z-10 max-w-7xl">
-        
-        {/* Styled Section Title */}
-        <div className="relative mb-12 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              My <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Tech Stack</span>
-            </h2>
-            <div className="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto"></div>
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+        <div className="section-heading">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+            My <span className="text-gradient">Tech Stack</span>
+          </h2>
+          <div className="section-heading__bar mt-6" />
         </div>
-        {/* Note: If your <SectionTitle> component *already* looks like the one above, 
-          you can just use this instead:
-          <SectionTitle title="My Tech Stack" />
-        */}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 mt-10 ">
-          {SKILLS.map((skill, index) => (
-            <Card
-              key={skill.name}
-              delay={index * 100} // This delay enables the staggered animation on scroll (mobile-friendly)
-              className="group 
-                         bg-[#3a0c38ff] backdrop-blur-lg border border-white/10 
-                         rounded-2xl p-4 sm:p-6 
-                         transition-all duration-300
-                         hover:scale-105 hover:bg-[#590a55ff] 
-                         hover:shadow-xl hover:shadow-purple-500/30"
-            >
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <div
-                  className="transition-transform duration-300 group-hover:scale-125 animate-float"
-                  style={{ animationDelay: `${index * 150}ms` }}
-                >
-                  {/* Icon with dynamic color */}
-                  <TechIcon name={skill.name} className={`w-12 h-12 ${skill.color}`} />
-                </div>
-                <p className="text-base sm:text-lg font-semibold text-white text-center">
-                  {skill.name}
-                </p>
+        <div className="mt-10 space-y-10">
+          {SKILL_CATEGORIES.map((category) => (
+            <div key={category.name}>
+              <h3 className="skill-category-heading mb-4 text-xl font-semibold text-slate-800 sm:text-2xl">
+                {category.name}
+              </h3>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-6">
+                {category.skills.map((skill) => (
+                  <div
+                    key={skill}
+                    className="skill-card tech-card group rounded-2xl border border-gray-200 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 sm:p-5"
+                  >
+                    <div className="flex flex-col items-center justify-center gap-4 text-center">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-gray-200 bg-gray-50 transition duration-300 group-hover:scale-110 dark:border-slate-600 dark:bg-slate-700">
+                        <TechIcon name={skill} className="h-10 w-10 text-gray-900 dark:text-gray-100" />
+                      </div>
+                      <p className="text-base font-semibold text-slate-800">{skill}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
