@@ -57,16 +57,15 @@ export default function ServicesSection() {
   };
 
   return (
-    <section id="services" ref={sectionRef} className="section-shell relative overflow-hidden py-20 lg:py-28">
-      <div className="absolute left-[-4rem] top-1/4 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
-      <div className="absolute bottom-8 right-[-3rem] h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+    <section id="services" ref={sectionRef} data-speed="-0.035" className="section-shell relative overflow-hidden py-20 lg:py-28">
+      <div data-speed="0.14" className="absolute left-[-4rem] top-1/4 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
+      <div data-speed="-0.12" className="absolute bottom-8 right-[-3rem] h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="services-heading section-heading mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             What I <span className="text-gradient">Do Best</span>
           </h2>
-          <div className="section-heading__bar mt-6" />
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">

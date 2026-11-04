@@ -151,6 +151,7 @@ export default function ProjectsSection() {
       <a
         key={type}
         href={href}
+        data-magnetic
         target="_blank"
         rel="noreferrer"
         className={className}
@@ -165,17 +166,17 @@ export default function ProjectsSection() {
     <section
       id="projects"
       ref={sectionRef}
+      data-speed="-0.035"
       className="section-shell relative overflow-hidden py-20 lg:py-28"
     >
-      <div className="absolute right-[-2rem] top-0 h-80 w-80 rounded-full bg-violet-600/12 blur-[120px]" />
-      <div className="absolute left-[-3rem] bottom-0 h-80 w-80 rounded-full bg-cyan-500/12 blur-[120px]" />
+      <div data-speed="0.14" className="absolute right-[-2rem] top-0 h-80 w-80 rounded-full bg-violet-600/12 blur-[120px]" />
+      <div data-speed="-0.12" className="absolute left-[-3rem] bottom-0 h-80 w-80 rounded-full bg-cyan-500/12 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="section-heading mb-10">
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Featured <span className="text-gradient">Projects</span>
           </h2>
-          <div className="section-heading__bar mt-6" />
         </div>
 
         <div className="project-filters mb-10 flex flex-wrap justify-center gap-3">
@@ -247,6 +248,7 @@ export default function ProjectsSection() {
         <div className="mt-16 text-center">
           <a
             href="https://github.com/tharusha-liyanage"
+            data-magnetic
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-7 py-3 text-sm font-semibold text-violet-800 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:bg-violet-50"

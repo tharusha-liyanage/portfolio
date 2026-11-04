@@ -9,10 +9,11 @@ import ContactSection from "./sections/ContactSection";
 import Nav from "./sections/Nav";
 import Footer from "./sections/Footer";
 import ThemeToggle from "./components/ThemeToggle";
+import GlobalEffects from "./components/GlobalEffects";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-transparent text-slate-900 antialiased selection:bg-violet-500/20">
+    <div className="relative isolate min-h-screen bg-transparent text-slate-900 antialiased selection:bg-violet-500/20">
       <Nav />
       <main className="pt-16 sm:pt-20">
         <HeroSection />
@@ -25,6 +26,7 @@ export default function App() {
       </main>
       <Footer />
       <ThemeToggle />
+      <GlobalEffects />
     </div>
   );
 }

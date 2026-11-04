@@ -60,24 +60,22 @@ export default function HeroSection() {
     <section
       id="home"
       ref={sectionRef}
-      className="section-shell relative flex min-h-screen items-center overflow-hidden bg-white pb-16 pt-20 dark:bg-[#0B0F19] sm:pt-24 md:pt-28"
+      data-speed="-0.035"
+      className="section-shell relative flex min-h-screen items-center overflow-hidden bg-white/75 pb-16 pt-20 dark:bg-[#0B0F19]/75 sm:pt-24 md:pt-28"
     >
-      <div className="hero-orb absolute -left-20 top-8 h-64 w-64 rounded-full bg-violet-300/35 blur-[120px]" />
-      <div className="hero-orb absolute bottom-10 right-[-3rem] h-72 w-72 rounded-full bg-cyan-200/45 blur-[120px]" />
-      <div className="hero-background absolute inset-0" />
+      <div data-speed="0.14" className="hero-orb absolute -left-20 top-8 h-64 w-64 rounded-full bg-violet-300/35 blur-[120px]" />
+      <div data-speed="-0.12" className="hero-orb absolute bottom-10 right-[-3rem] h-72 w-72 rounded-full bg-cyan-200/45 blur-[120px]" />
+      <div data-speed="-0.03" className="hero-background absolute inset-0" />
       <div className="hero-ring pointer-events-none absolute right-[8%] top-[18%] hidden h-80 w-80 rounded-full border border-dashed border-violet-300/30 lg:block" />
       <div className="hero-ring pointer-events-none absolute right-[12%] top-[22%] hidden h-64 w-64 rounded-full border border-cyan-300/25 lg:block" />
-      <div className="hero-grid-pattern absolute inset-0 opacity-30" />
+      <div data-speed="-0.08" className="hero-grid-pattern absolute inset-0 opacity-30" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="flex flex-col items-center justify-between gap-12 lg:flex-row lg:gap-10">
           <div className="w-full text-center lg:w-3/5 lg:text-left">
-            <div className="hero-intro inline-flex items-center rounded-full border border-violet-300/50 bg-white/75 px-4 py-2 shadow-[0_8px_28px_rgba(117,68,216,0.11)] backdrop-blur-md">
-              <span className="text-sm font-medium tracking-[0.12em] text-violet-700 uppercase">Welcome to my portfolio</span>
-            </div>
 
             <div className="mt-6 space-y-3">
-              <h1 className="hero-name text-4xl font-black tracking-[-0.06em] text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 data-speed="0.06" className="hero-name text-3xl font-black tracking-[-0.06em] text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl">
                 Hi, I&apos;m <br className="hidden lg:block" />
                 <span className="text-gradient">{HERO_DATA.name}</span>
               </h1>
@@ -101,6 +99,7 @@ export default function HeroSection() {
             <div className="hero-actions mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
               <a
                 href="#projects"
+                data-magnetic
                 className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-700 to-violet-600 px-7 py-3.5 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,68,216,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_36px_rgba(117,68,216,0.3)]"
               >
                 My Work
@@ -109,6 +108,7 @@ export default function HeroSection() {
 
               <a
                 href={HERO_DATA.cvLink}
+                data-magnetic
                 download
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-violet-300 bg-white/80 px-7 py-3.5 text-sm font-semibold text-violet-800 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:bg-violet-50"
               >

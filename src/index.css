@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --react-blue: #61dafb;
   color-scheme: light;
   --bg-primary: #f7f8fc;
   --bg-secondary: #ffffff;
@@ -19,6 +20,50 @@
   --border-color: rgba(117, 68, 216, 0.2);
   --shadow-violet: rgba(117, 68, 216, 0.14);
   --shadow-cyan: rgba(8, 145, 178, 0.12);
+}
+
+.tech-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --glare-opacity: 0;
+}
+
+.tech-card::after {
+  position: absolute;
+  z-index: 0;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    240px circle at var(--pointer-x) var(--pointer-y),
+    rgba(139, 92, 246, 0.72),
+    rgba(34, 211, 238, 0.36) 32%,
+    transparent 72%
+  );
+  content: "";
+  opacity: var(--glare-opacity);
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 200ms ease;
+}
+
+.tech-card-glare {
+  background: radial-gradient(
+    circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    rgba(139, 92, 246, 0.16),
+    rgba(34, 211, 238, 0.08) 22%,
+    transparent 58%
+  );
+  opacity: var(--glare-opacity, 0);
+  transition: opacity 200ms ease;
+}
+
+.tech-card:hover .tech-icon {
+  color: var(--tech-brand-color) !important;
 }
 
 html.dark {
@@ -110,12 +155,26 @@ img {
   background-size: 32px 32px;
   mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
   pointer-events: none;
+  transform: translate3d(0, var(--grid-offset-y, 0px), 0);
+}
+
+.contact-section::before {
+  display: none;
+}
+
+[data-speed]:not(.section-shell) {
+  translate: 0 var(--parallax-y, 0px);
 }
 
 .hero-background {
   background-image:
     radial-gradient(circle at top, rgba(196, 181, 253, 0.35), transparent 35%),
-    linear-gradient(180deg, #fbfaff 0%, #f2f8ff 48%, #fbfaff 100%);
+    linear-gradient(
+      180deg,
+      rgba(251, 250, 255, 0.35) 0%,
+      rgba(242, 248, 255, 0.45) 48%,
+      rgba(251, 250, 255, 0.35) 100%
+    );
 }
 
 .hero-grid-pattern {
@@ -126,13 +185,42 @@ img {
 }
 
 html.dark .hero-background {
-  background-image: linear-gradient(180deg, #0b0f19 0%, #111827 48%, #0b0f19 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(11, 15, 25, 0.35) 0%,
+    rgba(17, 24, 39, 0.45) 48%,
+    rgba(11, 15, 25, 0.35) 100%
+  );
 }
 
 html.dark .hero-grid-pattern {
   background-image:
     linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body,
+  body a,
+  body button {
+    cursor: none;
+  }
+
+  body input,
+  body textarea,
+  body [contenteditable="true"] {
+    cursor: text;
+  }
+}
+
+.custom-cursor {
+  display: none;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .custom-cursor {
+    display: block;
+  }
 }
 
 .section-heading {

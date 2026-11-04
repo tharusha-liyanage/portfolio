@@ -73,6 +73,18 @@ export default function ContactSection() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const section = sectionRef.current;
+    section.querySelectorAll(".contact-background-orb").forEach((orb, index) => {
+      gsap.to(orb, {
+        x: index % 2 === 0 ? 70 : -65,
+        y: index % 2 === 0 ? -55 : 60,
+        duration: 20,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+        delay: index * 1.5,
+      });
+    });
+
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -203,17 +215,18 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="section-shell relative overflow-hidden py-20 lg:py-28"
+      data-speed="-0.035"
+      className="contact-section section-shell isolate relative overflow-hidden py-16 lg:py-20"
     >
-      <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-[120px]" />
-      <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="contact-background-orb pointer-events-none absolute -left-24 top-0 -z-10 h-[28rem] w-[28rem] rounded-full bg-violet-500/30 opacity-30 blur-[120px]" />
+      <div className="contact-background-orb pointer-events-none absolute -right-24 top-1/3 -z-10 h-[30rem] w-[30rem] rounded-full bg-cyan-400/30 opacity-30 blur-[120px]" />
+      <div className="contact-background-orb pointer-events-none absolute bottom-[-8rem] left-1/3 -z-10 h-80 w-80 rounded-full bg-fuchsia-500/25 opacity-30 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
-        <div className="contact-heading section-heading mb-12">
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+        <div className="contact-heading mb-12 text-center">
+          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Let&apos;s <span className="text-gradient">Connect</span>
           </h2>
-          <div className="section-heading__bar mt-6" />
         </div>
 
         <div className="mx-auto grid max-w-5xl grid-cols-1 justify-items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3">

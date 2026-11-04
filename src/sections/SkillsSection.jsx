@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SKILL_CATEGORIES } from "../data/skills";
-import TechIcon from "../data/TechIcon";
+import TechCard from "../components/TechCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +14,7 @@ export default function SkillsSection() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     gsap.set(".skill-category-heading", { autoAlpha: 0, y: 12 });
-    gsap.set(".skill-card", { autoAlpha: 0, scale: 0.8 });
+    gsap.set(".skill-card", { autoAlpha: 0, scaleX: 0.8, scaleY: 0.8 });
 
     const timeline = gsap.timeline({
       scrollTrigger: {
@@ -33,7 +33,8 @@ export default function SkillsSection() {
         ".skill-card",
         {
           autoAlpha: 1,
-          scale: 1,
+          scaleX: 1,
+          scaleY: 1,
           duration: 0.6,
           stagger: 0.1,
           ease: "back.out(1.7)",
@@ -42,16 +43,15 @@ export default function SkillsSection() {
   }, { scope: sectionRef });
 
   return (
-    <section id="skills" ref={sectionRef} className="section-shell relative overflow-hidden py-20 lg:py-28">
-      <div className="absolute left-[-5rem] top-1/4 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
-      <div className="absolute bottom-0 right-[-4rem] h-80 w-80 rounded-full bg-violet-500/12 blur-[120px]" />
+    <section id="skills" ref={sectionRef} data-speed="-0.035" className="section-shell relative overflow-hidden py-20 lg:py-28">
+      <div data-speed="0.14" className="absolute left-[-5rem] top-1/4 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div data-speed="-0.12" className="absolute bottom-0 right-[-4rem] h-80 w-80 rounded-full bg-violet-500/12 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="section-heading">
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             My <span className="text-gradient">Tech Stack</span>
           </h2>
-          <div className="section-heading__bar mt-6" />
         </div>
 
         <div className="mt-10 space-y-10">
@@ -62,17 +62,7 @@ export default function SkillsSection() {
               </h3>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-6">
                 {category.skills.map((skill) => (
-                  <div
-                    key={skill}
-                    className="skill-card tech-card group rounded-2xl border border-gray-200 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 sm:p-5"
-                  >
-                    <div className="flex flex-col items-center justify-center gap-4 text-center">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-gray-200 bg-gray-50 transition duration-300 group-hover:scale-110 dark:border-slate-600 dark:bg-slate-700">
-                        <TechIcon name={skill} className="h-10 w-10 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <p className="text-base font-semibold text-slate-800">{skill}</p>
-                    </div>
-                  </div>
+                  <TechCard key={skill} skill={skill} />
                 ))}
               </div>
             </div>

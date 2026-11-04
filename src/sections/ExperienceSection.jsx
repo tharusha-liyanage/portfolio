@@ -49,16 +49,15 @@ export default function ExperienceSection() {
   }, { scope: sectionRef });
 
   return (
-    <section id="experience" ref={sectionRef} className="section-shell relative overflow-hidden py-20 lg:py-28">
-      <div className="absolute left-1/4 top-0 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
-      <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+    <section id="experience" ref={sectionRef} data-speed="-0.035" className="section-shell relative overflow-hidden pt-20 pb-16 lg:pt-28 lg:pb-20">
+      <div data-speed="0.14" className="absolute left-1/4 top-0 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
+      <div data-speed="-0.12" className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
         <div className="section-heading mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Education & <span className="text-gradient">Experience</span>
           </h2>
-          <div className="section-heading__bar mt-6" />
         </div>
 
         <div className="relative mx-auto max-w-5xl">
