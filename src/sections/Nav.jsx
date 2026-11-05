@@ -10,6 +10,7 @@ function Nav() {
     () => [
       { name: "Home", href: "#home" },
       { name: "About", href: "#about" },
+      { name: "Certifications", href: "#certifications" },
       { name: "Services", href: "#services" },
       { name: "Projects", href: "#projects" },
       { name: "Experience", href: "#experience" },
@@ -50,9 +51,9 @@ function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-        <a href="#home" className="group flex items-center text-2xl font-black tracking-tight text-slate-900">
+        <a href="#home" className="group flex items-center gap-1 text-2xl font-black tracking-tight text-slate-900">
           <span className="text-gradient">Tharusha</span>
-          <span className="text-slate-900">.L</span>
+          <span className="text-slate-900">Liyanage</span>
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -87,7 +88,7 @@ function Nav() {
         </button>
       </nav>
 
-      <div className={`overflow-hidden transition-all duration-300 md:hidden ${isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 md:hidden ${isMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"}`}>
         <div className="mx-4 mb-4 rounded-2xl border border-violet-100 bg-white/95 p-3 shadow-lg backdrop-blur-xl">
           {navItems.map((item) => (
             <a

@@ -21,7 +21,11 @@ export default function ProjectsSection() {
   );
 
   useGSAP(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(".project-card, .project-filters", { autoAlpha: 1, y: 0 });
+      gsap.set(".project-image-reveal", { clipPath: "inset(0% 0% 0% 0%)" });
+      return;
+    }
 
     gsap.set(".project-card", { autoAlpha: 0, y: 50 });
     gsap.set(".project-filters", { autoAlpha: 0, y: 16 });
@@ -41,6 +45,23 @@ export default function ProjectsSection() {
         stagger: 0.2,
         ease: "power3.out",
       });
+
+    sectionRef.current.querySelectorAll(".project-image-reveal").forEach((image) => {
+      gsap.fromTo(
+        image,
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.2,
+          ease: "expo.inOut",
+          scrollTrigger: {
+            trigger: image,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+    });
   }, { scope: sectionRef });
 
   useLayoutEffect(() => {
@@ -67,6 +88,12 @@ export default function ProjectsSection() {
         enteringCards,
         { autoAlpha: 0, scale: 0.95 },
         { autoAlpha: 1, scale: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" }
+      );
+
+      gsap.fromTo(
+        enteringCards.map((card) => card.querySelector(".project-image-reveal")),
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "expo.inOut" }
       );
     }
 
@@ -209,7 +236,7 @@ export default function ProjectsSection() {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 via-transparent to-cyan-100/50 opacity-0 transition duration-500 group-hover:opacity-100" />
               <div className="relative z-10 flex h-full flex-col">
-                <div className="relative h-60 overflow-hidden border-b border-violet-100 bg-violet-50">
+                <div className="project-image-reveal relative h-60 overflow-hidden border-b border-violet-100 bg-violet-50 [clip-path:inset(100%_0%_0%_0%)]">
                   <img
                     src={project.imageSrc}
                     alt={project.title}

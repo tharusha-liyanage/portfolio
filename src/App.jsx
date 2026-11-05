@@ -6,10 +6,12 @@ import ServicesSection from "./sections/ServicesSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import ContactSection from "./sections/ContactSection";
+import CertificationsSection from "./sections/CertificationsSection";
 import Nav from "./sections/Nav";
 import Footer from "./sections/Footer";
 import ThemeToggle from "./components/ThemeToggle";
 import GlobalEffects from "./components/GlobalEffects";
+import ScrollProgress from "./components/ScrollProgress";
 
 export default function App() {
   return (
@@ -19,6 +21,7 @@ export default function App() {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
+        <CertificationsSection />
         <ServicesSection />
         <ProjectsSection />
         <ExperienceSection />
@@ -26,6 +29,7 @@ export default function App() {
       </main>
       <Footer />
       <ThemeToggle />
+      <ScrollProgress />
       <GlobalEffects />
     </div>
   );
