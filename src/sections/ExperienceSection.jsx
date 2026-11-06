@@ -56,7 +56,7 @@ export default function ExperienceSection() {
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
         <div className="section-heading mb-16">
           <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-            Education & <span className="text-gradient">Experience</span>
+         Experience & <span className="text-gradient">Education </span>
           </h2>
         </div>
 

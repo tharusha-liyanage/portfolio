@@ -6,11 +6,16 @@ import TagCloud from "TagCloud";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Massively expanded array to fill the 3D sphere
 const ALL_SKILLS = [
   "React", "Next.js", "Tailwind CSS", "Bootstrap", "Node.js", 
   "Spring Boot", "PHP", "Java", "Python", "FastAPI", 
   "PostgreSQL", "MongoDB", "MySQL", "LangChain", 
-  "CrewAI", "Pinecone", "Git", "GitHub", "JavaScript", "C"
+  "CrewAI", "Pinecone", "Git", "GitHub", "JavaScript", "C",
+  "Express.js", "MariaDB", "HTML5", "CSS3", "Shadcn UI",
+  "Postman", "VS Code", "Linux", "AWS", "Docker",
+  "RAG Systems", "Agentic AI", "REST APIs", "Agile",
+  "IntelliJ IDEA", "Neon", "Overleaf", "JSON"
 ];
 
 const SKILL_CATEGORIES = [
@@ -48,7 +53,6 @@ const SKILL_CATEGORIES = [
   }
 ];
 
-// Interactive Bento Card with Dynamic Mouse Tracking and Theme Support
 const GlowCard = ({ category }) => {
   const cardRef = useRef(null);
 
@@ -67,7 +71,6 @@ const GlowCard = ({ category }) => {
       onMouseMove={handleMouseMove}
       className={`glow-card group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-xl backdrop-blur-xl transition-all duration-500 dark:border-white/10 dark:bg-slate-900/50 dark:shadow-none ${category.borderHover}`}
     >
-      {/* Dynamic Hover Spotlight */}
       <div 
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
@@ -93,7 +96,6 @@ const GlowCard = ({ category }) => {
         ))}
       </div>
       
-      {/* Decorative Gradient Line */}
       <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${category.gradient}`} />
     </div>
   );
@@ -101,10 +103,10 @@ const GlowCard = ({ category }) => {
 
 export default function AdvancedSkillsSection() {
   const sectionRef = useRef(null);
+  const sphereContainerRef = useRef(null);
   const sphereRef = useRef(null);
   const cloudInstance = useRef(null);
 
-  // Initialize the 3D Text Sphere
   useEffect(() => {
     if (!sphereRef.current) return;
     
@@ -112,15 +114,14 @@ export default function AdvancedSkillsSection() {
       sphereRef.current.innerHTML = "";
     }
 
-    const radius = window.innerWidth < 768 ? 160 : 260;
+    const radius = window.innerWidth < 768 ? 160 : 280; 
     
-    // itemClass now fully supports light mode (slate-700) and dark mode (slate-300)
     cloudInstance.current = TagCloud(sphereRef.current, ALL_SKILLS, {
       radius: radius,
       maxSpeed: "fast",
-      initSpeed: "normal",
+      initSpeed: "fast",
       direction: 135,
-      keep: true,
+      keep: true, // This ensures the rotation calculations keep items facing forward
       itemClass: "text-slate-800 dark:text-slate-300 hover:text-purple-600 dark:hover:text-cyan-400 cursor-pointer text-sm md:text-lg font-bold transition-colors duration-300 drop-shadow-md",
     });
 
@@ -138,22 +139,20 @@ export default function AdvancedSkillsSection() {
       },
     });
 
-    // Reveal main heading
     tl.fromTo(
-      ".section-title",
+      ".section-heading",
       { autoAlpha: 0, y: -40, scale: 0.9 },
       { autoAlpha: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.5)" }
     );
 
-    // Animate the 3D sphere spinning in from the left
+    // Removed the initial 'rotation' on the container to keep text strictly horizontal
     tl.fromTo(
-      sphereRef.current,
-      { autoAlpha: 0, x: -100, scale: 0.5, rotation: -90 },
-      { autoAlpha: 1, x: 0, scale: 1, rotation: 0, duration: 1.5, ease: "elastic.out(1, 0.7)" },
+      sphereContainerRef.current,
+      { autoAlpha: 0, x: -100, scale: 0.5 },
+      { autoAlpha: 1, x: 0, scale: 1, duration: 1.5, ease: "elastic.out(1, 0.7)" },
       "-=0.5"
     );
 
-    // Stagger the glow cards sliding in from the right
     tl.fromTo(
       ".glow-card",
       { autoAlpha: 0, x: 100, rotateY: 15 },
@@ -161,7 +160,6 @@ export default function AdvancedSkillsSection() {
       "-=1.2"
     );
 
-    // Pop-in effect for the individual skill pills inside the cards
     tl.fromTo(
       ".skill-pill-item",
       { autoAlpha: 0, scale: 0 },
@@ -169,16 +167,14 @@ export default function AdvancedSkillsSection() {
       "-=0.4"
     );
 
-    // Continuous floating animation for the cards (runs infinitely after load)
     gsap.to(".glow-card", {
       y: -8,
       duration: 2.5,
       stagger: { each: 0.2, from: "random", repeat: -1, yoyo: true },
       ease: "sine.inOut",
-      delay: 1, // start after entrance animations
+      delay: 1, 
     });
 
-    // Ambient floating for background gradient meshes
     gsap.to(".ambient-mesh", {
       rotation: 360,
       scale: 1.2,
@@ -189,6 +185,18 @@ export default function AdvancedSkillsSection() {
       stagger: 2
     });
 
+    // Removed 'rotateZ' from the scrollTrigger to prevent the text from tilting on scroll
+    gsap.to(sphereContainerRef.current, {
+      y: 50,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+      }
+    });
+
   }, { scope: sectionRef });
 
   return (
@@ -197,7 +205,6 @@ export default function AdvancedSkillsSection() {
       ref={sectionRef} 
       className="relative min-h-screen overflow-hidden bg-slate-50 py-24 transition-colors duration-500 dark:bg-[#0A0F1C]"
     >
-      {/* Complex Ambient Animated Background (Works in both modes) */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden">
         <div className="ambient-mesh absolute left-[-10%] top-[-10%] h-[50vw] w-[50vw] rounded-full bg-cyan-400/20 blur-[120px] dark:bg-cyan-500/10" />
         <div className="ambient-mesh absolute bottom-[-10%] right-[-10%] h-[40vw] w-[40vw] rounded-full bg-purple-400/20 blur-[120px] dark:bg-purple-600/10" />
@@ -205,22 +212,25 @@ export default function AdvancedSkillsSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
-        <div className="services-heading section-heading mb-16">
-          <h2 data-speed="0.06" className="text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-             My <span className="text-gradient">Tech Stack</span>
+        <div className="section-heading mb-16">
+          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
+            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-purple-500 to-rose-500">Tech Stack</span>
           </h2>
         </div>
+        
         <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           
-          {/* Left Side: 3D Interactive Tag Cloud */}
           <div className="flex w-full items-center justify-center lg:w-1/2 lg:justify-start">
-            <div 
-              ref={sphereRef} 
-              className="relative flex h-[350px] w-[350px] items-center justify-center md:h-[550px] md:w-[550px]"
-            />
+            <div ref={sphereContainerRef} className="relative flex h-[350px] w-[350px] items-center justify-center md:h-[600px] md:w-[600px]">
+              <div className="absolute inset-0 m-auto h-[60%] w-[60%] animate-pulse rounded-full bg-gradient-to-tr from-cyan-300/30 to-purple-400/30 blur-3xl dark:from-cyan-500/20 dark:to-purple-600/20" />
+              
+              <div 
+                ref={sphereRef} 
+                className="relative z-10 flex h-full w-full items-center justify-center font-sans"
+              />
+            </div>
           </div>
 
-          {/* Right Side: Categorized Glow Cards */}
           <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:w-1/2 lg:gap-8">
             {SKILL_CATEGORIES.map((category, index) => (
               <GlowCard key={index} category={category} />

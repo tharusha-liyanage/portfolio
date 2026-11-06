@@ -3,6 +3,18 @@ import logo2 from "../assets/logo2.png";
 
 export const EXPERIENCE_DATA = [
   {
+    type: "work",
+    title: "Software Engineering Intern",
+    institution: "DLAD Software Solution",
+    date: "May 1, 2026 – November 1, 2026",
+    location: "Sri Lanka",
+    description: [
+      "Developed enterprise applications using Next.js, Frappe, and Shadcn UI.",
+      "Performed functional, role-based, integration, and end-to-end testing.",
+    ],
+    img: null,
+  },
+  {
     type: "Education",
     title: "BSc Hons in Computer Science & Technology",
     institution: "Uva Wellassa University of Sri Lanka",
@@ -21,16 +33,5 @@ export const EXPERIENCE_DATA = [
     description: "Developed a strong foundation in IT fundamentals, web systems, database concepts, and practical application development.",
     img: logo2,
   },
-  {
-    type: "work",
-    title: "Software Engineering Intern",
-    institution: "DLAD Software Solution",
-    date: "May 1, 2026 – November 1, 2026",
-    location: "Sri Lanka",
-    description: [
-      "Developed enterprise applications using Next.js, Frappe, and Shadcn UI.",
-      "Performed functional, role-based, integration, and end-to-end testing.",
-    ],
-    img: null,
-  },
+  
 ];
