@@ -214,7 +214,7 @@ export default function AdvancedSkillsSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="section-heading mb-16">
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
-            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-purple-500 to-rose-500">Tech Stack</span>
+            My  <span className="text-gradient">Tech Stack</span>
           </h2>
         </div>
         
